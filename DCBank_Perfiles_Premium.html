@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCBank — Cuatro perfiles de clientes que abandonan el Paquete Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    /* ===========================================
+       TEMA — paleta e identidad DCBank
+       Cambiar estos valores cambia todo el deck
+       =========================================== */
+    :root{
+        --red:#EC0000;
+        --red-dark:#B50000;
+        --white:#FFFFFF;
+        --ink:#15161A;
+        --ink-2:#1D1E24;
+        --gray:#6B6F76;
+        --gray-light:#F2F2F2;
+        --border:#E7E7E9;
+
+        --c1:#2F6B9A; /* Transaccionales multicanal */
+        --c2:#2A9D8F; /* Vinculados por nómina */
+        --c3:#8C6BB1; /* Vinculados por crédito */
+        --c4:#D97732; /* Desvinculación avanzada */
+
+        --font-display:'Sora',sans-serif;
+        --font-body:'Work Sans',sans-serif;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    /* ===========================================
+       FIXED 16:9 STAGE — obligatorio, no modificar
+       =========================================== */
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000;font-family:var(--font-body);}
+    .deck-viewport{position:fixed;inset:0;overflow:hidden;background:#000;}
+    .deck-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;background:var(--white);}
+    .slide{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;display:block;visibility:hidden;opacity:0;pointer-events:none;background:var(--white);}
+    .slide.active,.slide.visible{visibility:visible;opacity:1;pointer-events:auto;z-index:1;}
+    img,video,canvas,svg{max-width:100%;max-height:100%;}
+    @media print{
+        html,body{width:1920px;height:auto;overflow:visible;background:#fff;}
+        .deck-viewport{position:static;overflow:visible;background:#fff;}
+        .deck-stage{position:static;width:auto;height:auto;transform:none!important;background:none;}
+        .slide{position:relative;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;width:1920px;height:1080px;break-after:page;page-break-after:always;}
+        .slide:last-child{break-after:auto;page-break-after:auto;}
+        .deck-controls{display:none!important;}
+    }
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.2s!important;}}
+
+    /* ===========================================
+       REVEAL — animación de entrada por slide
+       =========================================== */
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);}
+    .slide.visible .reveal{opacity:1;transform:translateY(0);}
+    .reveal.r1{transition-delay:.05s;} .reveal.r2{transition-delay:.15s;}
+    .reveal.r3{transition-delay:.25s;} .reveal.r4{transition-delay:.35s;}
+    .reveal.r5{transition-delay:.45s;} .reveal.r6{transition-delay:.55s;}
+
+    /* ===========================================
+       LAYOUT COMPARTIDO: mitad contenido / mitad cámara
+       La mitad derecha queda SIEMPRE libre para que el
+       presentador superponga su cámara al grabar.
+       =========================================== */
+    .split{display:flex;width:1920px;height:1080px;}
+    .content-half{width:960px;height:1080px;flex:0 0 960px;background:var(--white);display:flex;flex-direction:column;}
+    .presenter-half{width:960px;height:1080px;flex:0 0 960px;background:var(--ink);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+    .watermark{width:560px;height:560px;position:relative;opacity:.07;}
+    .watermark .ring{position:absolute;inset:0;border-radius:50%;border:24px solid var(--white);}
+    .watermark .wbar{position:absolute;left:50%;top:36px;bottom:36px;width:64px;background:var(--white);transform:translateX(-50%) rotate(18deg);border-radius:32px;}
+    .presenter-tag{position:absolute;bottom:48px;left:0;right:0;text-align:center;font-size:14px;letter-spacing:.12em;color:rgba(255,255,255,.28);text-transform:uppercase;}
+
+    /* --- marca --- */
+    .mark{position:relative;flex:0 0 auto;}
+    .mark .ring{position:absolute;inset:0;border-radius:50%;border-style:solid;border-color:var(--white);}
+    .mark .mbar{position:absolute;left:50%;background:var(--white);transform:translateX(-50%) rotate(18deg);border-radius:999px;}
+
+    /* --- banda de marca alta (sólo portada) --- */
+    .brandband-hero{background:var(--red);height:176px;flex:0 0 176px;display:flex;align-items:center;gap:22px;padding:0 56px;}
+    .brandband-hero .mark{width:52px;height:52px;}
+    .brandband-hero .mark .ring{border-width:7px;}
+    .brandband-hero .mark .mbar{top:9px;bottom:9px;width:16px;}
+    .brandband-hero .wordmark{font-family:var(--font-display);font-weight:800;font-size:32px;color:var(--white);letter-spacing:-.01em;}
+    .brandband-hero .tagline{font-family:var(--font-body);font-weight:500;font-size:15px;color:rgba(255,255,255,.8);margin-top:4px;}
+
+    /* --- barra de marca delgada (slides de contenido) --- */
+    .headerbar{background:var(--red);height:96px;flex:0 0 96px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;}
+    .headerbar .brandmini{display:flex;align-items:center;gap:14px;}
+    .headerbar .mark{width:30px;height:30px;}
+    .headerbar .mark .ring{border-width:4px;}
+    .headerbar .mark .mbar{top:5px;bottom:5px;width:9px;}
+    .headerbar .wordmark-mini{font-family:var(--font-display);font-weight:800;font-size:20px;color:var(--white);}
+    .headerbar .pagelabel{font-family:var(--font-body);font-weight:600;font-size:15px;color:rgba(255,255,255,.92);letter-spacing:.02em;}
+
+    /* --- hero del titulo --- */
+    .hero-body{flex:1;padding:64px 56px 100px;display:flex;flex-direction:column;}
+    .hero-body h1{font-family:var(--font-display);font-weight:800;font-size:58px;line-height:1.14;color:var(--ink);letter-spacing:-.015em;max-width:830px;}
+    .hero-body .sub{margin-top:28px;font-size:20px;line-height:1.6;color:var(--gray);max-width:780px;}
+    .hero-body .sub b{color:var(--ink);font-weight:600;}
+    .bars{margin-top:auto;display:flex;align-items:flex-end;gap:36px;}
+    .barcol{width:92px;display:flex;flex-direction:column;align-items:center;}
+    .barval{font-family:var(--font-display);font-weight:700;font-size:17px;color:var(--ink);margin-bottom:8px;}
+    .bar{width:100%;border-radius:5px 5px 0 0;}
+    .barlabel{margin-top:10px;font-size:12.5px;line-height:1.3;color:var(--gray);text-align:center;}
+
+    /* ===========================================
+       SLIDE 2 — mapa de perfiles
+       =========================================== */
+    .map-body{flex:1;padding:52px 56px 100px;display:flex;flex-direction:column;}
+    .map-title{font-family:var(--font-display);font-weight:800;font-size:34px;color:var(--ink);margin-bottom:28px;}
+    .map-row{display:flex;align-items:center;gap:22px;padding:22px 0;border-bottom:1px solid var(--border);}
+    .map-row:last-child{border-bottom:none;}
+    .map-swatch{width:9px;align-self:stretch;border-radius:5px;flex:0 0 9px;}
+    .map-text{flex:1;}
+    .map-name{font-family:var(--font-display);font-weight:700;font-size:24px;color:var(--ink);}
+    .map-desc{margin-top:5px;font-size:14.5px;color:var(--gray);}
+    .map-stat{text-align:right;flex:0 0 150px;}
+    .map-pct{font-family:var(--font-display);font-weight:800;font-size:34px;}
+    .map-n{margin-top:2px;font-size:12.5px;color:var(--gray);}
+
+    /* ===========================================
+       SLIDE 3-6 — ficha de perfil
+       =========================================== */
+    .profile-body{flex:1;padding:48px 56px 100px;display:flex;flex-direction:column;}
+    .pf-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:30px;}
+    .pf-name{font-family:var(--font-display);font-weight:800;font-size:38px;color:var(--ink);max-width:560px;line-height:1.08;}
+    .pf-hero{text-align:right;flex:0 0 220px;}
+    .pf-pct{font-family:var(--font-display);font-weight:800;font-size:48px;line-height:1;}
+    .pf-n{margin-top:4px;font-size:13px;color:var(--gray);}
+
+    .pf-tiles{display:flex;gap:14px;margin-bottom:30px;}
+    .pf-tile{flex:1;background:var(--gray-light);border-radius:10px;padding:16px 14px;text-align:center;}
+    .pf-tile .v{font-family:var(--font-display);font-weight:700;font-size:26px;color:var(--ink);}
+    .pf-tile .l{margin-top:4px;font-size:11.5px;color:var(--gray);line-height:1.25;}
+
+    .pf-evol{font-size:17px;color:var(--gray);margin-bottom:32px;padding:14px 18px;background:var(--gray-light);border-radius:10px;}
+    .pf-evol b{color:var(--ink);font-weight:600;}
+    .pf-evol .arrow{font-weight:700;}
+
+    .pf-section-label{font-family:var(--font-display);font-weight:700;font-size:14px;letter-spacing:.04em;color:var(--gray);text-transform:uppercase;margin-bottom:16px;}
+    .pf-vinc{margin-bottom:30px;}
+    .pf-vrow{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+    .pf-vrow:last-child{margin-bottom:0;}
+    .pf-vlabel{flex:0 0 220px;font-size:15px;color:var(--ink);font-weight:500;}
+    .pf-vtrack{flex:1;height:16px;background:var(--gray-light);border-radius:8px;overflow:hidden;}
+    .pf-vfill{height:100%;border-radius:8px;}
+    .pf-vval{flex:0 0 58px;text-align:right;font-family:var(--font-display);font-weight:700;font-size:15px;}
+
+    .pf-econ{margin-top:auto;display:flex;gap:16px;}
+    .pf-econ-tile{flex:1;border-top:3px solid var(--ink);padding-top:14px;}
+    .pf-econ-tile .v{font-family:var(--font-display);font-weight:800;font-size:28px;color:var(--ink);}
+    .pf-econ-tile .l{margin-top:4px;font-size:12.5px;color:var(--gray);}
+
+    /* ===========================================
+       SLIDE 7 — cierre
+       =========================================== */
+    .close-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 56px;}
+    .close-body h1{font-family:var(--font-display);font-weight:800;font-size:64px;color:var(--ink);letter-spacing:-.01em;}
+    .close-body .sub{margin-top:20px;font-size:20px;color:var(--gray);}
+
+    /* ===========================================
+       EDICIÓN INLINE
+       =========================================== */
+    .editable{outline:none;border-radius:4px;}
+    body.edit-mode .editable{cursor:text;box-shadow:0 0 0 2px dashed transparent;outline:1.5px dashed rgba(236,0,0,.55);outline-offset:3px;}
+    body.edit-mode .editable:hover{outline-color:rgba(236,0,0,.9);background:rgba(236,0,0,.04);}
+    body.edit-mode .editable:focus{outline-color:var(--red);background:rgba(236,0,0,.06);}
+
+    .edit-hotzone{position:fixed;top:0;left:0;width:84px;height:84px;z-index:10000;cursor:pointer;}
+    .edit-toggle{
+        position:fixed;top:14px;left:14px;z-index:10001;
+        width:46px;height:46px;border-radius:50%;border:none;
+        background:var(--ink);color:#fff;font-size:19px;cursor:pointer;
+        opacity:0;pointer-events:none;transition:opacity .25s ease,background .2s ease;
+        display:flex;align-items:center;justify-content:center;
+        box-shadow:0 6px 18px rgba(0,0,0,.35);
+    }
+    .edit-toggle.show,.edit-toggle.active{opacity:1;pointer-events:auto;}
+    .edit-toggle.active{background:var(--red);}
+    .save-toast{
+        position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(12px);
+        background:var(--ink);color:#fff;font-family:var(--font-body);font-size:13px;
+        padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;z-index:10002;
+        transition:opacity .25s ease,transform .25s ease;
+    }
+    .save-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+    /* ===========================================
+       CONTROLES — fuera del stage (no 1920x1080)
+       =========================================== */
+    .deck-controls{
+        position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:1000;
+        display:flex;align-items:center;gap:16px;
+        background:rgba(21,22,26,.82);backdrop-filter:blur(6px);
+        padding:10px 18px;border-radius:999px;color:#fff;font-family:var(--font-body);
+    }
+    .deck-controls button{
+        width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.12);
+        color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    }
+    .deck-controls button:hover{background:rgba(255,255,255,.24);}
+    .deck-controls .count{font-size:13px;letter-spacing:.03em;min-width:48px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+    <main class="deck-stage" id="deckStage">
+
+        <!-- ============ SLIDE 1 — PORTADA ============ -->
+        <section class="slide active visible">
+            <div class="split">
+                <div class="content-half">
+                    <div class="brandband-hero">
+                        <div class="mark"><span class="ring"></span><span class="mbar"></span></div>
+                        <div>
+                            <div class="wordmark">DCBank</div>
+                            <div class="tagline">Informe para Directorio</div>
+                        </div>
+                    </div>
+                    <div class="hero-body">
+                        <h1 class="reveal r1 editable" data-eid="s1-h1">Cuatro perfiles de clientes que abandonan el Paquete Premium</h1>
+                        <p class="sub reveal r2 editable" data-eid="s1-sub">Bajas estrictas con historia completa (<b>n&nbsp;=&nbsp;1.991</b>) · Septiembre 2026</p>
+                        <div class="bars reveal r3">
+                            <div class="barcol"><span class="barval">49,2%</span><div class="bar" style="height:140px;background:var(--c1)"></div><span class="barlabel">Transaccionales multicanal</span></div>
+                            <div class="barcol"><span class="barval">6,8%</span><div class="bar" style="height:20px;background:var(--c2)"></div><span class="barlabel">Vinculados por nómina</span></div>
+                            <div class="barcol"><span class="barval">4,6%</span><div class="bar" style="height:14px;background:var(--c3)"></div><span class="barlabel">Vinculados por crédito</span></div>
+                            <div class="barcol"><span class="barval">39,4%</span><div class="bar" style="height:112px;background:var(--c4)"></div><span class="barlabel">Desvinculación avanzada</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="presenter-half">
+                    <div class="watermark"><span class="ring"></span><span class="wbar"></span></div>
+                    <span class="presenter-tag">Espacio reservado — cámara</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 2 — MAPA DE PERFILES ============ -->
+        <section class="slide">
+            <div class="split">
+                <div class="content-half">
+                    <div class="headerbar">
+                        <div class="brandmini"><div class="mark"><span class="ring"></span><span class="mbar"></span></div><span class="wordmark-mini">DCBank</span></div>
+                        <span class="pagelabel">Mapa de los 4 perfiles</span>
+                    </div>
+                    <div class="map-body">
+                        <div class="map-title reveal r1 editable" data-eid="s2-title">Cuatro formas distintas de llegar a la salida</div>
+
+                        <div class="map-row reveal r2">
+                            <div class="map-swatch" style="background:var(--c1)"></div>
+                            <div class="map-text"><div class="map-name">Transaccionales multicanal</div><div class="map-desc">37 trx (t0) · 3 familias activas · saldo $117</div></div>
+                            <div class="map-stat"><div class="map-pct" style="color:var(--c1)">49,2%</div><div class="map-n">n = 979</div></div>
+                        </div>
+                        <div class="map-row reveal r3">
+                            <div class="map-swatch" style="background:var(--c2)"></div>
+                            <div class="map-text"><div class="map-name">Vinculados por nómina</div><div class="map-desc">72 trx (t0) · 4 familias activas · saldo $7.179</div></div>
+                            <div class="map-stat"><div class="map-pct" style="color:var(--c2)">6,8%</div><div class="map-n">n = 135</div></div>
+                        </div>
+                        <div class="map-row reveal r4">
+                            <div class="map-swatch" style="background:var(--c3)"></div>
+                            <div class="map-text"><div class="map-name">Vinculados por crédito</div><div class="map-desc">12 trx (t0) · 2 familias activas · saldo −$2.768</div></div>
+                            <div class="map-stat"><div class="map-pct" style="color:var(--c3)">4,6%</div><div class="map-n">n = 92</div></div>
+                        </div>
+                        <div class="map-row reveal r5">
+                            <div class="map-swatch" style="background:var(--c4)"></div>
+                            <div class="map-text"><div class="map-name">Desvinculación avanzada</div><div class="map-desc">4 trx (t0) · 1 familia activa · saldo −$7.420</div></div>
+                            <div class="map-stat"><div class="map-pct" style="color:var(--c4)">39,4%</div><div class="map-n">n = 785</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="presenter-half"><div class="watermark"><span class="ring"></span><span class="wbar"></span></div></div>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 3 — PERFIL 1: RECONOCER ============ -->
+        <section class="slide">
+            <div class="split">
+                <div class="content-half">
+                    <div class="headerbar">
+                        <div class="brandmini"><div class="mark"><span class="ring"></span><span class="mbar"></span></div><span class="wordmark-mini">DCBank</span></div>
+                        <span class="pagelabel">Perfil 1 · Reconocer</span>
+                    </div>
+                    <div class="profile-body">
+                        <div class="pf-top reveal r1">
+                            <div class="pf-name editable" data-eid="s3-name">Transaccionales multicanal</div>
+                            <div class="pf-hero"><div class="pf-pct" style="color:var(--c1)">49,2%</div><div class="pf-n">de los clientes · n = 979</div></div>
+                        </div>
+                        <div class="pf-tiles reveal r2">
+                            <div class="pf-tile"><div class="v">115</div><div class="l">meses de<br>antigüedad</div></div>
+                            <div class="pf-tile"><div class="v">7</div><div class="l">productos<br>(t0)</div></div>
+                            <div class="pf-tile"><div class="v">3</div><div class="l">familias<br>activas</div></div>
+                            <div class="pf-tile"><div class="v">47</div><div class="l">años, edad<br>mediana</div></div>
+                        </div>
+                        <div class="pf-evol reveal r3">Transacciones <b>37</b> en t0 <span class="arrow" style="color:var(--c1)">↓</span> desde 42 · Saldo <b>$117</b> en t0 <span class="arrow" style="color:var(--c1)">↓</span> desde $2.119</div>
+                        <div class="pf-vinc reveal r4">
+                            <div class="pf-section-label">Vinculación en t0</div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Uso de tarjeta</span><div class="pf-vtrack"><div class="pf-vfill" style="width:69.9%;background:var(--c1)"></div></div><span class="pf-vval" style="color:var(--c1)">69,9%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Uso de canales digitales</span><div class="pf-vtrack"><div class="pf-vfill" style="width:86.5%;background:var(--c1)"></div></div><span class="pf-vval" style="color:var(--c1)">86,5%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Débitos automáticos</span><div class="pf-vtrack"><div class="pf-vfill" style="width:61.6%;background:var(--c1)"></div></div><span class="pf-vval" style="color:var(--c1)">61,6%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Saldo negativo</span><div class="pf-vtrack"><div class="pf-vfill" style="width:43.5%;background:var(--c1)"></div></div><span class="pf-vval" style="color:var(--c1)">43,5%</span></div>
+                        </div>
+                        <div class="pf-econ reveal r5">
+                            <div class="pf-econ-tile"><div class="v">$1.704</div><div class="l">Rentabilidad mensual (mediana)</div></div>
+                            <div class="pf-econ-tile"><div class="v">$9.671</div><div class="l">Rentabilidad anual registrada</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="presenter-half"><div class="watermark"><span class="ring"></span><span class="wbar"></span></div></div>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 4 — PERFIL 2: FACILITAR ============ -->
+        <section class="slide">
+            <div class="split">
+                <div class="content-half">
+                    <div class="headerbar">
+                        <div class="brandmini"><div class="mark"><span class="ring"></span><span class="mbar"></span></div><span class="wordmark-mini">DCBank</span></div>
+                        <span class="pagelabel">Perfil 2 · Facilitar</span>
+                    </div>
+                    <div class="profile-body">
+                        <div class="pf-top reveal r1">
+                            <div class="pf-name editable" data-eid="s4-name">Vinculados por nómina</div>
+                            <div class="pf-hero"><div class="pf-pct" style="color:var(--c2)">6,8%</div><div class="pf-n">de los clientes · n = 135</div></div>
+                        </div>
+                        <div class="pf-tiles reveal r2">
+                            <div class="pf-tile"><div class="v">69</div><div class="l">meses de<br>antigüedad</div></div>
+                            <div class="pf-tile"><div class="v">7</div><div class="l">productos<br>(t0)</div></div>
+                            <div class="pf-tile"><div class="v">4</div><div class="l">familias<br>activas</div></div>
+                            <div class="pf-tile"><div class="v">45</div><div class="l">años, edad<br>mediana</div></div>
+                        </div>
+                        <div class="pf-evol reveal r3">Transacciones <b>72</b> en t0 <span class="arrow" style="color:var(--c2)">↓</span> desde 85 · Saldo <b>$7.179</b> en t0 <span class="arrow" style="color:var(--c2)">↓</span> desde $19.791</div>
+                        <div class="pf-vinc reveal r4">
+                            <div class="pf-section-label">Vinculación en t0</div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Acreditación de sueldo</span><div class="pf-vtrack"><div class="pf-vfill" style="width:66.7%;background:var(--c2)"></div></div><span class="pf-vval" style="color:var(--c2)">66,7%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Transferencias</span><div class="pf-vtrack"><div class="pf-vfill" style="width:61.5%;background:var(--c2)"></div></div><span class="pf-vval" style="color:var(--c2)">61,5%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Uso de canales digitales</span><div class="pf-vtrack"><div class="pf-vfill" style="width:93.3%;background:var(--c2)"></div></div><span class="pf-vval" style="color:var(--c2)">93,3%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Saldo negativo</span><div class="pf-vtrack"><div class="pf-vfill" style="width:22.2%;background:var(--c2)"></div></div><span class="pf-vval" style="color:var(--c2)">22,2%</span></div>
+                        </div>
+                        <div class="pf-econ reveal r5">
+                            <div class="pf-econ-tile"><div class="v">$1.154</div><div class="l">Rentabilidad mensual (mediana)</div></div>
+                            <div class="pf-econ-tile"><div class="v">$9.086</div><div class="l">Rentabilidad anual registrada</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="presenter-half"><div class="watermark"><span class="ring"></span><span class="wbar"></span></div></div>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 5 — PERFIL 3: ACOMPAÑAR ============ -->
+        <section class="slide">
+            <div class="split">
+                <div class="content-half">
+                    <div class="headerbar">
+                        <div class="brandmini"><div class="mark"><span class="ring"></span><span class="mbar"></span></div><span class="wordmark-mini">DCBank</span></div>
+                        <span class="pagelabel">Perfil 3 · Acompañar</span>
+                    </div>
+                    <div class="profile-body">
+                        <div class="pf-top reveal r1">
+                            <div class="pf-name editable" data-eid="s5-name">Vinculados por crédito</div>
+                            <div class="pf-hero"><div class="pf-pct" style="color:var(--c3)">4,6%</div><div class="pf-n">de los clientes · n = 92</div></div>
+                        </div>
+                        <div class="pf-tiles reveal r2">
+                            <div class="pf-tile"><div class="v">61,5</div><div class="l">meses de<br>antigüedad</div></div>
+                            <div class="pf-tile"><div class="v">6</div><div class="l">productos<br>(t0)</div></div>
+                            <div class="pf-tile"><div class="v">2</div><div class="l">familias<br>activas</div></div>
+                            <div class="pf-tile"><div class="v">45</div><div class="l">años, edad<br>mediana</div></div>
+                        </div>
+                        <div class="pf-evol reveal r3">Transacciones <b>12</b> en t0 <span class="arrow" style="color:var(--c3)">≈</span> desde 12,5 · Saldo <b>−$2.768</b> en t0 <span class="arrow" style="color:var(--c3)">↓</span> desde −$2.167</div>
+                        <div class="pf-vinc reveal r4">
+                            <div class="pf-section-label">Vinculación en t0</div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Con algún crédito</span><div class="pf-vtrack"><div class="pf-vfill" style="width:100%;background:var(--c3)"></div></div><span class="pf-vval" style="color:var(--c3)">100,0%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Uso de canales digitales</span><div class="pf-vtrack"><div class="pf-vfill" style="width:64.1%;background:var(--c3)"></div></div><span class="pf-vval" style="color:var(--c3)">64,1%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Uso de tarjeta</span><div class="pf-vtrack"><div class="pf-vfill" style="width:10.9%;background:var(--c3)"></div></div><span class="pf-vval" style="color:var(--c3)">10,9%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Saldo negativo</span><div class="pf-vtrack"><div class="pf-vfill" style="width:83.7%;background:var(--c3)"></div></div><span class="pf-vval" style="color:var(--c3)">83,7%</span></div>
+                        </div>
+                        <div class="pf-econ reveal r5">
+                            <div class="pf-econ-tile"><div class="v">$2.067</div><div class="l">Rentabilidad mensual (mediana)</div></div>
+                            <div class="pf-econ-tile"><div class="v">$21.948</div><div class="l">Rentabilidad anual registrada</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="presenter-half"><div class="watermark"><span class="ring"></span><span class="wbar"></span></div></div>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 6 — PERFIL 4: DECIDIR ============ -->
+        <section class="slide">
+            <div class="split">
+                <div class="content-half">
+                    <div class="headerbar">
+                        <div class="brandmini"><div class="mark"><span class="ring"></span><span class="mbar"></span></div><span class="wordmark-mini">DCBank</span></div>
+                        <span class="pagelabel">Perfil 4 · Decidir</span>
+                    </div>
+                    <div class="profile-body">
+                        <div class="pf-top reveal r1">
+                            <div class="pf-name editable" data-eid="s6-name">Desvinculación avanzada</div>
+                            <div class="pf-hero"><div class="pf-pct" style="color:var(--c4)">39,4%</div><div class="pf-n">de los clientes · n = 785</div></div>
+                        </div>
+                        <div class="pf-tiles reveal r2">
+                            <div class="pf-tile"><div class="v">67</div><div class="l">meses de<br>antigüedad</div></div>
+                            <div class="pf-tile"><div class="v">5</div><div class="l">productos<br>(t0)</div></div>
+                            <div class="pf-tile"><div class="v">1</div><div class="l">familia<br>activa</div></div>
+                            <div class="pf-tile"><div class="v">45</div><div class="l">años, edad<br>mediana</div></div>
+                        </div>
+                        <div class="pf-evol reveal r3">Transacciones <b>4</b> en t0 <span class="arrow" style="color:var(--c4)">↓</span> desde 6 · Saldo <b>−$7.420</b> en t0 <span class="arrow" style="color:var(--c4)">↓</span> desde −$5.498</div>
+                        <div class="pf-vinc reveal r4">
+                            <div class="pf-section-label">Vinculación en t0</div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Uso de canales digitales</span><div class="pf-vtrack"><div class="pf-vfill" style="width:44.0%;background:var(--c4)"></div></div><span class="pf-vval" style="color:var(--c4)">44,0%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Débitos automáticos</span><div class="pf-vtrack"><div class="pf-vfill" style="width:14.4%;background:var(--c4)"></div></div><span class="pf-vval" style="color:var(--c4)">14,4%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Uso de tarjeta</span><div class="pf-vtrack"><div class="pf-vfill" style="width:9.9%;background:var(--c4)"></div></div><span class="pf-vval" style="color:var(--c4)">9,9%</span></div>
+                            <div class="pf-vrow"><span class="pf-vlabel">Saldo negativo</span><div class="pf-vtrack"><div class="pf-vfill" style="width:88.5%;background:var(--c4)"></div></div><span class="pf-vval" style="color:var(--c4)">88,5%</span></div>
+                        </div>
+                        <div class="pf-econ reveal r5">
+                            <div class="pf-econ-tile"><div class="v">$1.902</div><div class="l">Rentabilidad mensual (mediana)</div></div>
+                            <div class="pf-econ-tile"><div class="v">$12.760</div><div class="l">Rentabilidad anual registrada</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="presenter-half"><div class="watermark"><span class="ring"></span><span class="wbar"></span></div></div>
+            </div>
+        </section>
+
+        <!-- ============ SLIDE 7 — CIERRE ============ -->
+        <section class="slide">
+            <div class="split">
+                <div class="content-half">
+                    <div class="headerbar">
+                        <div class="brandmini"><div class="mark"><span class="ring"></span><span class="mbar"></span></div><span class="wordmark-mini">DCBank</span></div>
+                        <span class="pagelabel">&nbsp;</span>
+                    </div>
+                    <div class="close-body">
+                        <h1 class="reveal r1 editable" data-eid="s7-h1">Gracias</h1>
+                        <p class="sub reveal r2 editable" data-eid="s7-sub">Preguntas y discusión</p>
+                    </div>
+                </div>
+                <div class="presenter-half"><div class="watermark"><span class="ring"></span><span class="wbar"></span></div></div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- ============ CONTROLES (fuera del stage) ============ -->
+<div class="deck-controls">
+    <button id="prevBtn" title="Anterior (←)">‹</button>
+    <span class="count"><span id="curNum">1</span> / <span id="totalNum">7</span></span>
+    <button id="nextBtn" title="Siguiente (→ / espacio)">›</button>
+</div>
+
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Modo edición (tecla E)">✎</button>
+<div class="save-toast" id="saveToast">Guardado</div>
+
+<script>
+/* ===========================================
+   CONTROLADOR DE PRESENTACIÓN
+   =========================================== */
+class SlidePresentation {
+    constructor(){
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.current = 0;
+        this.stage = document.getElementById('deckStage');
+        document.getElementById('totalNum').textContent = this.slides.length;
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        document.getElementById('prevBtn').addEventListener('click', () => this.show(this.current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => this.show(this.current + 1));
+        this.show(0);
+    }
+    setupStageScale(){
+        const scale = () => {
+            const f = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            const x = (window.innerWidth - 1920 * f) / 2;
+            const y = (window.innerHeight - 1080 * f) / 2;
+            this.stage.style.transform = `translate(${x}px, ${y}px) scale(${f})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+    }
+    setupKeyboardNav(){
+        document.addEventListener('keydown', (e) => {
+            if (e.target.isContentEditable) return;
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); this.show(this.current + 1); }
+            if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); this.show(this.current - 1); }
+        });
+    }
+    setupTouchNav(){
+        let startX = null;
+        document.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            if (startX === null) return;
+            const dx = e.changedTouches[0].clientX - startX;
+            if (Math.abs(dx) > 60) this.show(this.current + (dx < 0 ? 1 : -1));
+            startX = null;
+        }, { passive: true });
+    }
+    setupWheelNav(){
+        let locked = false;
+        window.addEventListener('wheel', (e) => {
+            if (locked) return;
+            if (Math.abs(e.deltaY) < 30) return;
+            locked = true;
+            this.show(this.current + (e.deltaY > 0 ? 1 : -1));
+            setTimeout(() => { locked = false; }, 500);
+        }, { passive: true });
+    }
+    show(index){
+        this.current = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === this.current);
+            slide.classList.toggle('visible', i === this.current);
+        });
+        document.getElementById('curNum').textContent = this.current + 1;
+    }
+}
+
+/* ===========================================
+   EDICIÓN INLINE — hover arriba a la izq. o tecla E
+   Autosave en localStorage (por navegador/máquina)
+   =========================================== */
+class InlineEditor {
+    constructor(){
+        this.active = false;
+        this.storeKey = 'dcbank-perfiles-deck-edits';
+        this.hotzone = document.getElementById('editHotzone');
+        this.toggleBtn = document.getElementById('editToggle');
+        this.toast = document.getElementById('saveToast');
+        this.editableEls = Array.from(document.querySelectorAll('.editable'));
+        this.restore();
+        this.bind();
+    }
+    bind(){
+        let hideTimeout = null;
+        const reveal = () => { clearTimeout(hideTimeout); this.toggleBtn.classList.add('show'); };
+        const scheduleHide = () => { hideTimeout = setTimeout(() => { if (!this.active) this.toggleBtn.classList.remove('show'); }, 400); };
+        this.hotzone.addEventListener('mouseenter', reveal);
+        this.hotzone.addEventListener('mouseleave', scheduleHide);
+        this.toggleBtn.addEventListener('mouseenter', reveal);
+        this.toggleBtn.addEventListener('mouseleave', scheduleHide);
+        this.hotzone.addEventListener('click', () => this.toggle());
+        this.toggleBtn.addEventListener('click', () => this.toggle());
+        document.addEventListener('keydown', (e) => {
+            if ((e.key === 'e' || e.key === 'E') && !e.target.isContentEditable) { e.preventDefault(); this.toggle(); }
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); this.save(); }
+        });
+        this.editableEls.forEach((el) => {
+            el.addEventListener('input', () => this.save());
+        });
+    }
+    toggle(){
+        this.active = !this.active;
+        document.body.classList.toggle('edit-mode', this.active);
+        this.toggleBtn.classList.toggle('active', this.active);
+        this.toggleBtn.classList.toggle('show', this.active);
+        this.editableEls.forEach((el) => el.setAttribute('contenteditable', this.active ? 'true' : 'false'));
+    }
+    save(){
+        const data = {};
+        this.editableEls.forEach((el) => { data[el.dataset.eid] = el.innerHTML; });
+        try { localStorage.setItem(this.storeKey, JSON.stringify(data)); this.flash(); } catch (err) {}
+    }
+    restore(){
+        try {
+            const raw = localStorage.getItem(this.storeKey);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+            this.editableEls.forEach((el) => { if (data[el.dataset.eid] !== undefined) el.innerHTML = data[el.dataset.eid]; });
+        } catch (err) {}
+    }
+    flash(){
+        this.toast.classList.add('show');
+        clearTimeout(this._t);
+        this._t = setTimeout(() => this.toast.classList.remove('show'), 1200);
+    }
+}
+
+new SlidePresentation();
+new InlineEditor();
+</script>
+</body>
+</html>

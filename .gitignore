@@ -1,0 +1,11 @@
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+# datasets pesados (GitHub no acepta archivos > 100 MB)
+*.csv.gz
+*.parquet
+*.zip

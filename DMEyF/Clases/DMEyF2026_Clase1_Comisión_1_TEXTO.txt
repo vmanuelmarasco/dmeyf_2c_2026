@@ -1,0 +1,515 @@
+
+[Página 1]
+Welcome
+Data Mining Economía y Finanzas - 2026 - Comisión 1
+Los Joacos + Ale Bolaños
+[Página 2]
+Sobre Mí, Sobre Ustedes
+●
+¿Quiénes somos?
+●
+Check in: de que se trata. 
+●
+Sobre sus cursadas del cuatrimestre anterior
+[Página 3]
+Sobre esta Materia > Objetivo
+Resolver un problema de dimensiones reales del mercado 
+argentino utilizando las herramientas tecnológicas para 
+manejar grandes volúmenes de datos y ser capaz de 
+generar una predicción competitiva en el mercado 
+profesional laboral argentino.
+[Página 4]
+Sobre esta Materia > ¿Qué vamos a ver?
+●
+Metodologías 
+Aprender a pensar 
+●
+Algoritmos y técnicas de última generación de modelado predictivo sobre datos 
+estructurados.
+Usar las mejores herramientas 
+●
+MLOps
+Saltar de las notebook a los procesos
+●
+Big Data en la nube
+Vamos a jugar a lo grande
+●
+Uso de Agentes para asistir a la creación modelos
+Vamos a alucinar a lo grande
+[Página 5]
+Sobre esta Materia > ¿Cómo lo vamos a ver?
+Sincrónicamente en Clases presenciales (Lunes + Plenarias )
+-
+Escucharnos
+-
+Actividades - (traigan Notebook cada 2 o 3 alumnos)
+-
+Presentaciones de compañeros
+Asincrónicamente a través de Zulip
+-
+Consultas
+-
+Desarrollo de experimentos
+-
+Memes
+[Página 6]
+Sobre esta Materia > El libro de la Asignatura
+DMEF26
+[Página 7]
+Sobre esta Materia > Uso de Zulip
+#Estrategias > Cálculo de la ... 
+Se me ocurrió la idea …
+#general > Python
+Ehh fiera!! mira lo que cranee…
+●
+Sean prolijos al utilizarlo. 
+●
+Si tiene una consulta o algo para 
+compartir, escriba siempre en el 
+stream correcto (#), con un 
+tópico autoexplicativo que sirva 
+para saber de qué se va tratar. 
+●
+Si va a responder veriﬁque que 
+está respondiendo al hilo.
+https://uba26.zulip.rebelare.com
+[Página 8]
+Sobre esta Materia > 23 EXPERIMENTOS
+Son experimentos de construcción colaborativa. 
+No todos van a hacen todos.
+El ﬁn es ayudarles a experimentar de forma 
+correcta y que los resultados ayuden también a 
+sus compañeros a entregar mejores modelos.
+[Página 9]
+Sobre esta Materia  > Qué vamos a usar?
+data.table 
+MLRmbo 
+Pero NO hay limitaciones, usted puede usar lo que quiera
+[Página 10]
+Storytelling
+[Página 11]
+Storytelling > Usted, un unicornio
+[Página 12]
+Storytelling
+[Página 13]
+Storytelling 
+Michelina Porto
+Gerente de BI  
+(Cassie Kozyrkov -former Chief Decision Scientist 
+- Google )
+Miranda Wintour
+Directora Comercial
+(Mary Barra - CEO General Motors)
+[Página 14]
+Storytelling
+[Página 15]
+Storytelling
+[Página 16]
+Storytelling
+[Página 17]
+Hablando con el Negocio > Cómo piensa un Data Scientist
+[Página 18]
+Hablando con el Negocio > Cómo piensa el negocio
+[Página 19]
+Primera Asignación > Abandono de clientes 
+Minuta de la reunión
+●
+Nuestra empresa tiene clientes de alto valor que son los que disponen 
+del Paquete Premium
+●
+Un cliente de alto valor en promedio genera a la empresa 2.2m pesos al 
+año.
+●
+Adquirir a un cliente de alto valor es muy costoso, evitar que se vaya es 
+más barato que conseguir uno nuevo.
+●
+Se realizó un experimento, donde sí se gastaba 27500 pesos en un 
+estímulo para retener a un cliente premium, el 50% acepta y se queda
+[Página 20]
+Primera Asignación > Abandono de clientes 
+Minuta de la reunión
+●
+Marketing quiere empezar a hacer campañas proactivas para evitar la 
+fuga, le pide a usted un listado de clientes que se estarían yendo a 
+los cuales ellos deberían estimular. 
+●
+Quieren la cantidad de clientes “justa”, les interesa maximizar la 
+ganancia
+●
+NO van a realizar acción alguna sobre el listado que le vayamos a dar. 
+Van a comparar lo que enviamos con lo que paso en el real-world.
+[Página 21]
+Primera Asignación > Ayuda de Michelina, Target
+Dado que Michelina nos ve potencial decide ayudarnos explicandonos cómo el tiempo 
+hace de un modelo de clasiﬁcación, un modelo predictivo. 
+Foto de clientes 
+Toda info de los clientes para un mes 
+particular. Solo tiene datos del pasado con 
+respecto al mes
+(4 dígitos para el año + 2 dígitos para el mes 
+ie: 202103) 
+Target 
+Si existe un cliente en una foto N meses 
+adelantado del mes de la Foto
+CONTINUA / BAJA+1 / BAJA+2 / … / BAJA+N
+¿Qué información del futuro se puede añadir a la foto además del target?
+[Página 22]
+Primera Asignación > Ayuda de Michelina, Target
+202103
+202104
+202105
+id
+caja_ahorro
+cheques
+inversiones
+id
+caja_ahorro
+cheques
+inversiones
+id
+caja_ahorro
+cheques
+inversiones
+1
+*
+*
+*
+1
+*
+*
+*
+2
+*
+*
+*
+2
+*
+*
+*
+2
+*
+*
+*
+3
+*
+*
+*
+4
+*
+*
+*
+4
+*
+*
+*
+4
+*
+*
+*
+5
+*
+*
+*
+6
+*
+*
+*
+6
+*
+*
+*
+6
+*
+*
+*
+7
+*
+*
+*
+7
+*
+*
+*
+7
+*
+*
+*
+8
+*
+*
+*
+8
+*
+*
+*
+9
+*
+*
+*
+9
+*
+*
+*
+10
+*
+*
+*
+[Página 23]
+Primera Asignación > Ayuda de Michelina, Target
+202103
+202105
+202104
+202105
+id
+caja_ahorro
+cheques
+inversiones
+clase
+id
+caja_ahorro
+cheques
+inversiones
+id
+caja_ahorro
+cheques
+inversiones
+1
+*
+*
+*
+BAJA+2
+1
+*
+*
+*
+2
+*
+*
+*
+CONT
+2
+*
+*
+*
+2
+*
+*
+*
+3
+*
+*
+*
+BAJA+1
+4
+*
+*
+*
+CONT
+4
+*
+*
+*
+4
+*
+*
+*
+5
+*
+*
+*
+BAJA+1
+6
+*
+*
+*
+CONT
+6
+*
+*
+*
+6
+*
+*
+*
+7
+*
+*
+*
+CONT
+7
+*
+*
+*
+7
+*
+*
+*
+8
+*
+*
+*
+BAJA+2
+8
+*
+*
+*
+9
+*
+*
+*
+9
+*
+*
+*
+10
+*
+*
+*
+[Página 24]
+Primera Asignación > Ayuda de Michelina, Target
+Nos explica por qué hay que dejar un gap de un mes, y que solo tiene sentido 
+predecir a dos meses, dejando la construcción ﬁnal del target
+TARGET
+202103
+202104
+202105
+202106
+202107
+FOTO
+202103
+BAJA+1
+CONTINUA
+BAJA+2
+BAJA+1
+CONTINUA
+BAJA+3
+BAJA+2
+BAJA+1
+CONTINUA
+BAJA+4
+BAJA+3
+BAJA+2
+BAJA+1
+CONTINUA
+202104
+BAJA+1
+CONTINUA
+BAJA+2
+BAJA+1
+CONTINUA
+BAJA+3
+BAJA+2
+BAJA+1
+CONTINUA
+202105
+BAJA+1
+CONTINUA
+BAJA+2
+BAJA+1
+CONTINUA
+[Página 25]
+Primera Asignación > TAREA
+●
+El dataset que se le entrega para la primera 
+competencia tiene la foto de 202103 a 202108, pero no 
+tiene target. 
+●
+Debe armar la variable clase_ternaria, con las clases 
+CONTINUA, BAJA+1 y BAJA+2
+●
+Puede usar R, Python, …, pero se recomienda SQL
+●
+No hay una única solución, comporta por zulip al 
+stream #code si la suya es diferente (lenguaje usado, 
+código, etc) así todos aprenden a hacerlo de muchas 
+formas distintas.
+[Página 26]
+Primera Asignación > Ayuda de Michelina, Ganancia
+Nos explica cómo calcular la ganancia de una virtual campaña.  Razonamiento:
+●
+Debemos entregar una lista de personas que el modelo cree que no van a irse en 2 
+meses.
+●
+A todas las personas en la lista habría que estimularlas con un coste de $27.500, a priori 
+no sabemos si se van, si se van en al mes siguiente o dentro de 2.
+●
+Si la persona que dijimos que se iba en 2 meses, se va en el segundo mes, ganaríamos 
+los $2.200.000 del valor del cliente. Sin embargo como la experiencia dice que solo la 
+mitad de los estimulados se quedan, decimos que si acertamos solo ganaremos 
+1.100.000 pesos
+[Página 27]
+Primera Asignación > Ayuda de Michelina, Ganancia
+●
+Luego 
+Ganancia = 0.5 * $2.200.000 * aciertos  - $27.500 * estimulos
+Ganancia= $1.100.000 *BAJA2 - $27.500 *(BAJA2+ BAJA1+ CONTINUA)
+Ganancia= $1.072.500 *BAJA2 - $27.500 *(BAJA1+ CONTINUA)
+●
+Ejemplo, enviamos 3 estímulos donde hubieron 1 BAJA2, 1 BAJA1y 1 CONTINUA
+○
+El BAJA2 gasta $27.500 en estímulo y ganaremos $1.100.000. Tendremos una 
+ganancia de $1.072.500.
+○
+El BAJA1 se nos habrá ido antes de tiempo, habremos perdido $27.500. 
+○
+El CONTINUA no se fue del banco. Habremos estimulado erróneamente por otros 
+$27.500.
+○
+La ganancia de esa campaña virtual de 3 casos nos dará $1.017.500
+[Página 28]
+Primera Asignación > Ayuda de Michelina, Ganancia
+Podemos representar la ecuación anterior a través de la siguiente matriz de 
+ganancia
+Real
+BAJA+2
+BAJA+1 
+CONTINUA
+Predicho
+BAJA+2
+1.072.500
+ –27.500
+-27.500
+BAJA+1 0
+0
+0
+CONTINUA
+0
+0
+0
+●
+¿Está bien deﬁnida la métrica de ganancia?
+●
+¿No debería haber un castigo cuando el modelo predice mal y decide no 
+enviar estímulo a un registro que en realidad es un BAJA+2?
+[Página 29]
+Primera Asignación > Cantidad de estímulos
+Por último, ya teniendo cuál es la función de ganancias, tendremos que determinar la cantidad 
+óptima de envíos para obtener la mayor ganancia.
+Quizás algún alumnos piense en este momento:
+“¿Qué dice este? Los modelos nos devuelven la clase que corresponde, mandamos todos 
+los que el modelo nos dice y listo.”
+Bueno, NO. Un modelo devuelve un score, un valor habitualmente entre 1 y 0, que en algunos 
+casos es la probabilidad de pertenencia de una determinada clase.
+[Página 30]
+Primera Asignación > Cantidad de estímulos
+Pensemos juntos:
+Si un cliente tiene una prob de 0.2 de ser BAJA+2, de 0.3 de ser BAJA+1 y de 0.5 de ser 
+CONTINUA. ¿Usted le envía un estímulo?
+Deﬁenda su posición primero con los compañeros y luego con la clase.
+[Página 31]
+Primera Asignación > Probabilidad mínima
+Pensemos juntos:
+Con sus herramientas desarrolladas durante la primaria, secundaria, terciario, …, determine 
+junto a sus compañeros cúal es la probabilidad mínima frente a la cual uno debe mandar un 
+estímulo.
+[Página 32]
+Primera Asignación > Punto de corte
+Dado que contamos con una función de ganancia, podemos deﬁnir cuales son todos los 
+clientes que deben ser estimulados usando la probabilidad que devuelve el modelo.
+f es el modelo que devuelve una probabilidad para el caso x
+G es una variable aleatoria (VA) que refleja la ganancia
+Como es una VA, tiene una esperanza matemática (E) y si es 
+positiva, refleja que ganamos plata con ese caso. Tan solo resta 
+buscar el valor de p para el que la E es mayor a 0.
+Luego todo caso cuyo modelo devuelva una p mayor a 0.025 será 
+considerado bueno.
