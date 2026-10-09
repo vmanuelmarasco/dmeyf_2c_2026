@@ -17,3 +17,11 @@ experimentos/predicciones/
 
 # Base DuckDB del pipeline (432 MB, supera el límite de GitHub). Se regenera con pipeline/p01_base.py.
 pipeline/competencia.duckdb
+# Base DuckDB del notebook: se regenera corriendo competencia_02.ipynb.
+*.duckdb
+*.duckdb.wal
+
+# Pipeline adaptativo (p10): el cache del banco guarda probabilidades por
+# semilla (cientos de MB en real) y las corridas sinteticas se regeneran en ~1 min.
+pipeline/salidas/p10_cache_*/
+pipeline/salidas/p10_sintetico_*/

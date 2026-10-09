@@ -1,0 +1,39 @@
+22:29:56 [p10] modo=real carpeta=/Users/manuelmarasco/Desktop/dmeyf402/pipeline/salidas/p10_real_20261008_222956
+22:29:56 [E1] ===== Ingesta y diagnostico inicial =====
+22:29:57 [E1] base (983061, 242), 238 features iniciales
+22:29:57 [E1] gates OK: claves, granularidad, F1, F2, F4, madurez
+22:30:09 [E1] DECISION D1.1 constantes: ninguna -- una columna constante no puede generar ningun split
+22:30:09 [E1] DECISION D1.2 variables rotas: 64 detectadas -> candidato 'reparar_rotas' a la etapa 2 -- corregir sin medir es una decision de modelado tomada a ciegas
+22:30:09 [E1] DECISION D1.3 deriva (PSI): 1 con PSI > 0.25 -> ablacion a la etapa 2 -- la deriva puede ser honesta (inflacion); se decide midiendo
+22:30:22 [E1] baseline: junio: 401.23M +/- 7.00M (n=2) | mayo: 239.43M +/- 3.83M (n=2)
+22:30:22 [E1] DECISION D1.4 desbalance: activo modulo de muestreo -- prevalencia 0.622% < 5%
+22:30:30 [E1] DECISION D1.4 undersampling 0.5: rechazo -- inferior en algun fold; aceleracion 1.7x; mayo: -14.36M (-6.00%) p=1.000 0/2 | junio: -11.69M (-2.91%) p=1.000 0/2
+22:30:30 [E2] ===== Ingenieria iterativa =====
+22:30:30 [E2] candidato reparar_rotas (intento 1, E1 D1.2)
+22:30:40 [E2] DECISION bloque reparar_rotas: rechazo -- no gana en todos los folds con significancia y mejora minima; junio: +1.38M (+0.34%) p=0.500 1/2 [EVIDENCIA PARCIAL: solo ['junio'], el resto no tiene historia en train]
+22:30:40 [E2] candidato quitar_deriva_alta (intento 1, E1 D1.3)
+22:30:53 [E2] DECISION bloque quitar_deriva_alta: rechazo -- no gana en todos los folds con significancia y mejora minima; mayo: +4.19M (+1.75%) p=0.500 1/2 | junio: -15.94M (-3.97%) p=1.000 0/2
+22:30:53 [E2] candidato lag2_delta2 (intento 1, catalogo)
+22:30:54 [E2] ERROR en lag2_delta2: SinHistoria: 40 columnas sin historia en el train de algun fold (la ventana no alcanza): ['ctrx_quarter__lag2', 'ctrx_quarter__delta2', 'coperaciones_recurrentes_total__lag2', 'coperaciones_recurrentes_total__delta2', 'cantidad_canales_usados__lag2', 'cantidad_canales_usados__delta2']
+22:30:54 [E2] DECISION bloque lag2_delta2: descarto por falla -- sin_historia: 40 columnas sin historia en el train de algun fold (la ventana no alcanza): ['ctrx_quarter__lag2', 'ctrx_quarter__delta2', 'coperaciones_recurrentes_total__lag2', 'coperaciones_recurrentes_total__delt -> sin correccion posible
+22:30:54 [E2] candidato ventana3 (intento 1, catalogo)
+22:30:58 [E2] ERROR en ventana3: SinHistoria: 60 columnas sin historia en el train de algun fold (la ventana no alcanza): ['ctrx_quarter__media3', 'ctrx_quarter__ratio_media3', 'ctrx_quarter__tendencia3', 'coperaciones_recurrentes_total__media3', 'coperaciones_recurrentes_total__ratio_media3', 'coperaciones_recurrentes_total__tendencia3']
+22:30:58 [E2] DECISION bloque ventana3: descarto por falla -- sin_historia: 60 columnas sin historia en el train de algun fold (la ventana no alcanza): ['ctrx_quarter__media3', 'ctrx_quarter__ratio_media3', 'ctrx_quarter__tendencia3', 'coperaciones_recurrentes_total__media3', -> sin correccion posible
+22:30:58 [E2] candidato rank_montos_mes (intento 1, catalogo)
+22:31:15 [E2] DECISION bloque rank_montos_mes: rechazo -- no gana en todos los folds con significancia y mejora minima; mayo: +0.87M (+0.36%) p=0.500 1/2 | junio: -29.05M (-7.24%) p=1.000 0/2
+22:31:15 [E2] incumbente: trial25_238 (238 features) junio: 401.23M +/- 7.00M (n=2) | mayo: 239.43M +/- 3.83M (n=2)
+22:31:15 [E3] ===== Seleccion de modelo y optimizacion condicional =====
+22:31:15 [E3] DECISION espacio de busqueda: p=238, n~162,900 -- rangos ajustados a la dimensionalidad (ver _espacio_busqueda)
+22:31:26 [E3] DECISION busqueda: 6 trials -- estados por trial
+22:31:37 [E3] DECISION confirmar trial 3: no gana -- no gana en todos los folds con significancia y mejora minima (alpha Bonferroni 0.017); junio: -56.72M (-14.14%) p=1.000 0/2
+22:31:46 [E3] DECISION confirmar trial 4: no gana -- no gana en todos los folds con significancia y mejora minima (alpha Bonferroni 0.017); junio: -43.40M (-10.82%) p=1.000 0/2
+22:31:55 [E3] DECISION confirmar trial 1: no gana -- no gana en todos los folds con significancia y mejora minima (alpha Bonferroni 0.017); junio: -48.96M (-12.20%) p=1.000 0/2
+22:31:55 [E4] ===== Calibracion del corte y entrega =====
+22:31:55 [E4] DECISION regla de corte: R0_umbral_teorico -- ninguna regla gana en los dos sentidos; 0,025 no tiene parametro que transferir
+22:32:02 [E4] modelo final semilla 100129 listo
+22:32:09 [E4] modelo final semilla 100183 listo
+22:32:16 [E4] modelo final semilla 100151 listo
+22:32:23 [E4] modelo final semilla 500041 listo
+22:32:30 [E4] modelo final semilla 900007 listo
+22:32:30 [E4] DECISION entrega: entrega_real_20261008_223230.csv -- 8,431 estimulados con R0_umbral_teorico
+22:32:30 [p10] fin
