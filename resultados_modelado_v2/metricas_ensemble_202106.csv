@@ -1,0 +1,3 @@
+metodo,ganancia,auc,clientes_estimulados,ganancia_referencia,delta_ganancia,auc_referencia,delta_auc,estimulados_referencia,delta_estimulados
+PROMEDIO_5_SEMILLAS,408732500.0,0.9013354081573273,8617,408732500.0,0.0,0.901335,4.081573272696204e-07,8617,0
+MEDIANA_5_SEMILLAS,415332500.0,0.9012598235912431,8537,415332500.0,0.0,0.90126,-1.7640875682456425e-07,8537,0

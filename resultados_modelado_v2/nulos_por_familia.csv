@@ -1,0 +1,14 @@
+familia,features,nulos,celdas,pct_nulos
+anclaje,13,0,12779793,0.0
+canales_actividad,18,0,17695098,0.0
+carga_financiera,35,16932809,34407135,49.2130745556118
+cliente_rentabilidad,8,0,7864488,0.0
+cuentas_saldos,11,0,10813671,0.0
+lag_delta_eventos,47,7978250,46203867,17.267494082259393
+otras_base,28,49872,27525708,0.1811833504882054
+payroll_debitos_pagos,8,0,7864488,0.0
+prestamos_inversiones,14,0,13762854,0.0
+seguros,5,0,4915305,0.0
+tarjeta_master,17,5532556,16712037,33.10521631803472
+tarjeta_visa,17,1446754,16712037,8.656957856184738
+transferencias_cheques_forex,17,0,16712037,0.0

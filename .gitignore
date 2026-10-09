@@ -9,3 +9,11 @@ venv/
 *.csv.gz
 *.parquet
 *.zip
+
+# Experimento 01: cache del pipeline y predicciones por semilla.
+# Se regeneran con experimentos/exp01_harness.py (~4 min). No van al repo.
+experimentos/base_modelado.pkl
+experimentos/predicciones/
+
+# Base DuckDB del pipeline (432 MB, supera el límite de GitHub). Se regenera con pipeline/p01_base.py.
+pipeline/competencia.duckdb

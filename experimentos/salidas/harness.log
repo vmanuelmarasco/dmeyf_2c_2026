@@ -1,0 +1,50 @@
+[base] leyendo cache base_modelado.pkl
+[base] 238 features
+[base] gap temporal >= 2 verificado en los dos folds
+
+[mayo] train (202103,) (162900, 238) pos=960 | valid 202105 (163768, 238) pos=870
+  semilla 100129:   4.9s  ganancia@150iter= 242.14M  k=7835
+  semilla 100183:   4.8s  ganancia@150iter= 236.72M  k=7912
+  semilla 100151:   4.9s  ganancia@150iter= 242.03M  k=7599
+  semilla 500041:   4.8s  ganancia@150iter= 236.94M  k=8144
+  semilla 900007:   4.8s  ganancia@150iter= 240.41M  k=8018
+  semilla 103687:   4.9s  ganancia@150iter= 239.85M  k=7838
+  semilla 150151:   4.9s  ganancia@150iter= 237.63M  k=8159
+  semilla 212777:   4.9s  ganancia@150iter= 239.99M  k=7953
+  semilla 265543:   5.0s  ganancia@150iter= 236.86M  k=7907
+  semilla 318211:   4.8s  ganancia@150iter= 242.44M  k=7864
+  semilla 371299:   4.9s  ganancia@150iter= 241.28M  k=7866
+  semilla 424243:   4.9s  ganancia@150iter= 235.90M  k=7742
+  semilla 477551:   5.0s  ganancia@150iter= 248.02M  k=8061
+  semilla 530177:   4.8s  ganancia@150iter= 245.99M  k=7735
+  semilla 583651:   4.8s  ganancia@150iter= 233.59M  k=7986
+  semilla 636851:   4.9s  ganancia@150iter= 241.45M  k=7940
+  semilla 690037:   4.8s  ganancia@150iter= 234.71M  k=7865
+  semilla 743251:   4.8s  ganancia@150iter= 244.59M  k=7946
+  semilla 796553:   4.9s  ganancia@150iter= 236.88M  k=8066
+  semilla 849839:   4.8s  ganancia@150iter= 240.29M  k=7782
+
+[junio] train (202103, 202104) (326184, 238) pos=2099 | valid 202106 (164114, 238) pos=1098
+  semilla 100129:   9.7s  ganancia@150iter= 403.84M  k=8835
+  semilla 100183:   9.6s  ganancia@150iter= 394.76M  k=8645
+  semilla 100151:   9.6s  ganancia@150iter= 387.17M  k=8481
+  semilla 500041:   9.6s  ganancia@150iter= 408.51M  k=8785
+  semilla 900007:   9.6s  ganancia@150iter= 409.06M  k=8685
+  semilla 103687:   9.6s  ganancia@150iter= 379.09M  k=8415
+  semilla 150151:   9.7s  ganancia@150iter= 394.24M  k=8624
+  semilla 212777:   9.5s  ganancia@150iter= 406.59M  k=8695
+  semilla 265543:   9.7s  ganancia@150iter= 391.24M  k=8613
+  semilla 318211:   9.6s  ganancia@150iter= 361.13M  k=8308
+  semilla 371299:   9.6s  ganancia@150iter= 381.81M  k=8476
+  semilla 424243:   9.6s  ganancia@150iter= 403.23M  k=8617
+  semilla 477551:   9.5s  ganancia@150iter= 380.68M  k=8477
+  semilla 530177:   9.6s  ganancia@150iter= 383.85M  k=8402
+  semilla 583651:   9.7s  ganancia@150iter= 379.39M  k=8524
+  semilla 636851:   9.6s  ganancia@150iter= 399.41M  k=8756
+  semilla 690037:   9.5s  ganancia@150iter= 399.44M  k=8515
+  semilla 743251:   9.8s  ganancia@150iter= 382.08M  k=8586
+  semilla 796553:   9.6s  ganancia@150iter= 400.70M  k=8789
+  semilla 849839:   9.6s  ganancia@150iter= 372.46M  k=8336
+
+[fin] metricas en /Users/manuelmarasco/Desktop/dmeyf402/experimentos/salidas/exp01_metricas.csv
+[fin] predicciones en /Users/manuelmarasco/Desktop/dmeyf402/experimentos/predicciones
