@@ -25,3 +25,4 @@ pipeline/competencia.duckdb
 # semilla (cientos de MB en real) y las corridas sinteticas se regeneran en ~1 min.
 pipeline/salidas/p10_cache_*/
 pipeline/salidas/p10_sintetico_*/
+banco_medicion/pred/
