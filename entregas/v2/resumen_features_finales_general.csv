@@ -1,0 +1,3 @@
+experimento,ganancia_referencia,ganancia_candidato,delta_ganancia_media,delta_ganancia_minima,delta_ganancia_maxima,combinaciones_favorables,delta_auc_baja2_medio,meses_con_delta_positivo,meses_con_3_semillas_favorables,decision
+ACTUAL_MAS_RANKS_MENSUALES,324335000.0,322245000.0,-2090000.0,-8800000.0,8800000.0,3,-0.0005651889676927535,1,1,DESCARTAR
+ACTUAL_MAS_B5,324335000.0,321915000.0,-2420000.0,-16500000.0,18700000.0,3,0.00031435156048095216,1,1,DESCARTAR
