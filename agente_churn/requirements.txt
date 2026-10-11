@@ -1,0 +1,23 @@
+# Entorno base y manejo de datos masivos
+python-dateutil>=2.8.2
+numpy>=1.26.0,<2.0.0
+pandas>=2.1.0
+pyarrow>=14.0.0
+duckdb>=0.9.2
+
+# Algoritmos de Machine Learning y Scikit-Learn
+scikit-learn>=1.4.0  # >=1.4: RandomForest acepta NaN
+lightgbm>=4.1.0
+xgboost>=2.0.0
+
+# Optimización de Hiperparámetros y Almacenamiento
+optuna>=3.4.0
+sqlalchemy>=2.0.0
+
+# Explicabilidad, Visualización y MLOps
+shap>=0.43.0
+matplotlib>=3.8.0
+mlflow>=2.9.0
+
+# Configuración
+pyyaml>=6.0

@@ -1,0 +1,78 @@
+# Configuración única del pipeline. Todos los scripts de src/ leen este archivo.
+# Equivale al bloque PARAM de los notebooks de la cátedra (z494_TareaHogar_04).
+# Cambiá el número de experimento en cada corrida nueva, así no pisás resultados.
+
+experimento: 7001
+semilla_primigenia: 290497   # tu semilla personal (la de Zulip)
+semilla_kaggle: 314159       # partición 30/70 del mes de test para chequear estabilidad (z494)
+
+datos:
+  # Ruta absoluta en la Mac (Google Drive). "~" no se expande: va la ruta completa.
+  crudo: "/Users/manuelmarasco/Library/CloudStorage/GoogleDrive-hola@manuelmarasco.com/Mi unidad/DMEyF/2026/notebooks/data/competencia_01_crudo.csv"
+  con_clase: data/dataset_con_clase.parquet
+  carpeta_exp: data/exp                  # cada experimento escribe en data/exp/exp<N>/
+
+meses:
+  # Esquema de la cátedra (z494: train 202104 → future 202106, salteando 202105).
+  # Entre el último mes de entrenamiento y el mes que se predice queda un mes sin usar,
+  # igual que en la entrega: entrenás hasta junio y predecís agosto (julio sin clase completa).
+  # competencia_01_crudo.csv tiene 202103 a 202108: clase completa hasta 202106,
+  # 202107 solo BAJA+1, 202108 sin clase. Con tan pocos meses se usa un mes de
+  # entrenamiento, como z494. 202104 tiene lag1 pero no lag2 (202102 no existe):
+  # LightGBM ignora esa columna en el test y la aprovecha en el modelo final.
+  train: [202104]          # optimización bayesiana y modelo de testeo
+  test: 202106             # se mira UNA vez: curva de ganancia y elección de envíos
+  train_final: [202106]    # mismo esquema, corrido dos meses (la "gran decisión" de z494)
+  future: 202108           # mes a entregar
+
+target:
+  # clase01 de z494: BAJA+1 y BAJA+2 son 1. Para el target puro, dejar solo "BAJA+2".
+  positivos: ["BAJA+1", "BAJA+2"]
+
+fe:
+  # Variables de dominio bancario (tarjetas, liquidez, sueldo, canales, vínculo).
+  # Están definidas y explicadas en VARIABLES_BANCARIAS, en src/03_feature_engineering_drift.py.
+  bancarias: true
+  # Lags y deltas para TODAS las variables numéricas, incluidas las bancarias (z402)
+  lags: [1, 2, 3]
+  deltas: [1, 2, 3]
+  # Media móvil y pendiente de los últimos 3 meses, solo para estas variables (z402)
+  ventana_variables: [ctrx_quarter, mcaja_ahorro, mcuenta_corriente, mpasivos_margen,
+                      mactivos_margen, mrentabilidad_annual, mtarjeta_visa_consumo,
+                      mtarjeta_master_consumo, cpayroll_trx]
+  # Variables que se reemplazan por su percent_rank dentro de cada foto_mes (z402),
+  # una forma de neutralizar inflación/drift. Vacío = no se aplica.
+  # Sueldo como posición dentro del mes: neutraliza el aguinaldo de junio (+46% en el sueldo promedio).
+  # "monetarias" pasaría todas las variables en pesos, pero con 2 meses de distancia la inflación
+  # casi no las mueve y los empates generan saltos artificiales.
+  rank_por_mes: [mpayroll, mpayroll2, payroll_total]
+  # Variables a sacar DESPUÉS de revisar data/exp/exp<N>/drift_psi.csv (z701).
+  # La cátedra no purga en automático: se mira cada caso.
+  # Fechas: su valor depende del calendario, no del cliente (PSI 1,6 a 11,5 junio vs agosto).
+  # cpayroll_trx deltas: el aguinaldo entra como una acreditación más en junio (PSI 0,25 a 0,85).
+  excluir: [Visa_fultimo_cierre, Master_fultimo_cierre, Visa_Finiciomora, Master_Finiciomora,
+            cpayroll_trx_delta1, cpayroll_trx_delta2, cpayroll_trx_delta3, cpayroll_trx_slope3]
+
+entrenamiento:
+  undersampling: 0.1   # fracción de CONTINUA que entra a la optimización (z494)
+
+optuna:
+  n_trials: 50          # la cátedra: 30 es tacaño, ideal 50-100
+  xval_folds: 5
+  rangos:               # bordes de z494
+    learning_rate: [0.01, 0.3]
+    feature_fraction: [0.1, 1.0]
+    num_leaves: [8, 2048]
+    min_data_in_leaf: [1, 8000]
+  fijos:
+    objective: binary
+    metric: auc
+    boosting: gbdt
+    max_bin: 31
+    feature_pre_filter: false
+    force_row_wise: true
+    verbosity: -1
+
+semillerio:
+  n_semillas: 20
+  cortes: {desde: 4000, hasta: 19000, paso: 500}   # PARAM$cortes de z494

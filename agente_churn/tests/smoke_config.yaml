@@ -1,0 +1,35 @@
+# Config del test de humo: mismos meses que la competencia real, parámetros mínimos.
+experimento: 9999
+semilla_primigenia: 290497
+semilla_kaggle: 314159
+datos:
+  crudo: tests/tmp/competencia_crudo.csv
+  con_clase: tests/tmp/dataset_con_clase.parquet
+  carpeta_exp: tests/tmp/exp
+meses:
+  train: [202102, 202103, 202104]
+  test: 202106
+  train_final: [202104, 202105, 202106]
+  future: 202108
+target:
+  positivos: ["BAJA+1", "BAJA+2"]
+fe:
+  lags: [1, 2]
+  deltas: [1, 2]
+  ventana_variables: [ctrx_quarter, mcaja_ahorro]
+  rank_por_mes: [mcaja_ahorro]
+  excluir: []
+entrenamiento:
+  undersampling: 0.3
+optuna:
+  n_trials: 3
+  xval_folds: 3
+  rangos:
+    learning_rate: [0.05, 0.3]
+    feature_fraction: [0.3, 1.0]
+    num_leaves: [8, 64]
+    min_data_in_leaf: [10, 200]
+  fijos: {objective: binary, metric: auc, boosting: gbdt, max_bin: 31, feature_pre_filter: false, force_row_wise: true, verbosity: -1}
+semillerio:
+  n_semillas: 3
+  cortes: {desde: 100, hasta: 1500, paso: 100}

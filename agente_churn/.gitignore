@@ -1,0 +1,23 @@
+# Datos, experimentos y bases locales: nunca se suben (pesan cientos de MB y los datos no son nuestros)
+data/*
+!data/.gitkeep
+db/*
+!db/.gitkeep
+mlruns/
+mlartifacts/
+tests/tmp/
+nohup.out
+
+# Entorno virtual y caché de Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Sistema y editores
+.DS_Store
+.vscode/
+.idea/
+*.swp
