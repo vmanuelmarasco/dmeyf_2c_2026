@@ -69,3 +69,18 @@ mismo. 10 de las 25 variables más importantes son nuevas.
 | `verscla05` / `verscla05final` | `entregas/verscla05_amex_k13500.csv` | **98,285** (verscla03: 94,820) |
 
 El semillerío supera en ~2 puntos al promedio de las semillas sueltas, y hasta una semilla promedio supera a verscla03.
+
+## Versión `verscla06` — Optuna nuevo sobre las variables de verscla05 (experimento, no supera a verscla05)
+
+Celdas 29–32 del notebook. Los modelos entrenados quedan en `modelos/modelo_verscla06_seed*.txt`
+(se cargan con `lgb.Booster(model_file=...)`).
+
+| Paso | Qué hace | Resultado |
+|---|---|---|
+| Más variables (celda 29) | Contadores de "desarme" (`n_cayeron_mitad`, `n_apagados`, `n_subieron_doble`) y `_var1` de las 140 variables | Meseta 426,9 / 430,6 contra 426,9: empate. `n_apagados` no separa (0,4%–1,1% de BAJA+2): las señales elegidas a mano le ganan al conteo masivo |
+| Optuna (celda 30) | 25% de CONTINUA, CV de 5 folds, métrica = ganancia promedio en la franja de 12.500 a 15.000 envíos (no el mejor corte de cada fold), MedianPruner, 100 trials | Mejor CV $529 M (trial 97): lr 0,026, num_leaves 274, min_data_in_leaf 983, feature_fraction 0,24, 514 árboles. Con 983 clientes por hoja sobre ~42.000 filas, el árbol no puede pasar de ~40 hojas: la regularización la hace min_data_in_leaf |
+| Junio (celda 31) | Semillerío de 5, 25% de CONTINUA por semilla | Meseta **431,8** contra 426,9 (+4,9, gana en los 11 cortes); ensamble 429,3 |
+| Entrega (celda 32) | Entrenada en 202106, top 13.500 de 202108 (93,2% de coincidencia con verscla05) | `entregas/verscla06_k13500.csv` y 5 archivos por semilla |
+
+**Bot:** la media de las 5 semillas no superó a verscla05, así que la entrega final sigue siendo `verscla05`
+(98,285). La mejora de +4,9 en junio estaba en el límite del ruido y el público no la confirmó.
