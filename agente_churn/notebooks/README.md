@@ -36,3 +36,36 @@ Celdas 18–21 agregadas a `competencia_v5.ipynb` sobre la base de `verscla03`.
 junio, un mes completo que no se usó para elegir nada, verscla03 le gana al ensamble por $6,6 M. Por eso se
 recomienda como entrega final volver a enviar `verscla03` (`mi_pipeline_b2_k14500.csv`). Optimizar con
 undersampling acelera Optuna, pero en este caso el modelo resultante es más débil y no aporta al ensamble.
+
+## Versión `verscla05` — variables estilo American Express (entrega final)
+
+Experimentos sobre verscla03, todos medidos en junio con semillerío de 5 (meseta = promedio de la ganancia
+entre 12.500 y 15.000 envíos). El código está en `verscla05_celdas.py`.
+
+| Experimento | Meseta junio | Conclusión |
+|---|---|---|
+| verscla03 (referencia) | 408,2 | — |
+| Undersampling 25% / 50% con params de verscla03 | 408,9 / 405,3 | Empate: el undersampling no cuesta ganancia; lo que fallaba en verscla04 era el Optuna optimista |
+| Marzo + abril → junio | 381,8 | Peor: marzo es el primer mes y no tiene lags |
+| Sin fechas de tarjeta | 407,1 | Empate |
+| Rank por mes de 7 montos / de todos | 399,6 / 380,3 | Peor: el percentil destruye información absoluta (ceros, negativos) |
+| Sin conteo de sueldo | 405,6 | Empate |
+| **Variables Amex (+28)** | **426,9** | **+18,7 M, gana en todos los cortes** |
+
+**Validación adversarial.** Abril vs junio AUC 1,000: no es drift sino falta de historia (lags 2 y 3 vacíos en
+abril, así que el modelo de prueba nunca los usa y el final sí). Junio vs agosto AUC 0,993: fechas de tarjeta,
+montos inflados y conteo de sueldo (aguinaldo). El drift es detectable pero no perjudica a LightGBM.
+
+**Variables Amex.** Cambio relativo contra el mes anterior para 20 variables (`_var1`: −0,5 = cayó a la mitad,
+independiente de la inflación) y manejo de la tarjeta (deuda tras el pago, pago sobre saldo, pago sobre mínimo,
+uso del límite). El mes anterior existe para abril, junio y agosto, así que el modelo de prueba y el final ven lo
+mismo. 10 de las 25 variables más importantes son nuevas.
+
+**Entrega.** Entrenada en 202106 con 203 variables, semillerío de 5, top 13.500 de 202108.
+
+| Envío al bot | Archivos | Ganancia pública |
+|---|---|---|
+| `verscla05semillas` | `entregas/verscla05_seed*_k13500.csv` (5) | media 96,316 · desvío 1,684 |
+| `verscla05` / `verscla05final` | `entregas/verscla05_amex_k13500.csv` | **98,285** (verscla03: 94,820) |
+
+El semillerío supera en ~2 puntos al promedio de las semillas sueltas, y hasta una semilla promedio supera a verscla03.
