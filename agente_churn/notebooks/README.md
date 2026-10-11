@@ -84,3 +84,34 @@ Celdas 29–32 del notebook. Los modelos entrenados quedan en `modelos/modelo_ve
 
 **Bot:** la media de las 5 semillas no superó a verscla05, así que la entrega final sigue siendo `verscla05`
 (98,285). La mejora de +4,9 en junio estaba en el límite del ruido y el público no la confirmó.
+
+## Versión `verscla07` — ensamble LightGBM + LightGBM Optuna + XGBoost (ENTREGA FINAL)
+
+Celdas 33–34 del notebook. XGBoost 2.1.4 con las 203 variables de verscla05, sin optimizar
+(`hist`, max_bin 31, eta 0,03, max_depth 6, min_child_weight 20, subsample 0,8, colsample_bytree 0,4,
+600 árboles), semillerío de 5. Modelos en `modelos/modelo_xgb_verscla07_seed*.json`.
+
+| Modelo (junio) | Meseta 12.500–15.000 | Contra verscla05 |
+|---|---|---|
+| LightGBM verscla05 | 426,9 | — |
+| XGBoost solo | 429,1 | +2,2 |
+| LightGBM + XGBoost | 430,4 | +3,5 |
+| **LightGBM + LightGBM Optuna (verscla06) + XGBoost** | **432,8** | **+5,9 (gana en 9 cortes, empata en 2, no pierde en ninguno)** |
+
+Ensamble por promedio de rankings de los tres semillerios, entrenados en 202106; top 13.500 de 202108
+(`entregas/verscla07_ens3_k13500.csv`, 96,3% de coincidencia con verscla05).
+
+**Bot:** 97,955 (verscla05: 98,285). El criterio se fijó antes del envío: quedarse con el ensamble salvo que el
+público cayera más de 1 punto, porque 0,33 está muy por debajo del desvío entre semillas (1,68) y un ensamble
+de tres modelos distintos reduce la varianza en el privado. **verscla07 es la entrega final.**
+
+## Resumen de versiones
+
+| Rama | Bot (público) | Qué es |
+|---|---|---|
+| `verscla02` | 94,325 | agente_churn, pipeline de scripts |
+| `verscla03` | 94,820 | Notebook paso a paso, target BAJA+1+2 |
+| `verscla04` | 95,123 | Ensamble con undersampling (descartado) |
+| `verscla05` | 98,285 | Variables estilo American Express |
+| `verscla06` | — | Optuna con métrica de franja (no superó a verscla05 en el bot) |
+| **`verscla07`** | **97,955** | **Ensamble LightGBM + LightGBM Optuna + XGBoost — entrega final** |
