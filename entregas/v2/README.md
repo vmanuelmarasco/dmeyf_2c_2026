@@ -10,15 +10,16 @@ la versión entregada.
 
 ## Archivo para entregar
 
-`entrega_v2_ids.csv` contiene únicamente los 8.750 `numero_de_cliente` seleccionados,
-sin encabezado y uno por línea. Es el formato corto esperado por el bot.
+`ENTREGA_V2.csv` es el único archivo de entrega. Contiene únicamente los 8.750
+`numero_de_cliente` seleccionados, sin encabezado y uno por línea. Su primera fila ya
+es un ID.
 
 También se conservan:
 
 | Archivo | Contenido |
 |---|---|
-| `entrega_competencia_v4_final.csv` | Cartera completa de agosto: 164.647 IDs y columna binaria `Predicted` |
-| `ids_baja_mas_2_con_encabezado.csv` | Los 8.750 IDs seleccionados, con encabezado |
+| `ENTREGA_V2.csv` | **Archivo para entregar:** 8.750 IDs, sin encabezado ni columnas adicionales |
+| `auditoria_cartera_completa.csv` | Archivo auxiliar, no se entrega: 164.647 IDs y columna binaria `Predicted` |
 | `competencia_v4.ipynb` | Desarrollo completo: features, validación temporal, Optuna, ensamble y entrenamiento final |
 | `modelos/` | Los cinco modelos LightGBM entrenados |
 | `decision_modelo_final_v4.csv` | Comparación final entre candidatos |
