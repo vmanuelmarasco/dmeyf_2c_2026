@@ -11,7 +11,8 @@ seguir cambiando; estos no.
 
 | archivo | qué es |
 |---|---|
-| `entrega_agosto_estimular.csv` | **el archivo subido**: 9.520 clientes a estimular, una columna |
+| `entrega_agosto_ids.csv` | **el archivo entregado** al bot de la materia: 9.520 IDs, sin encabezado, uno por línea |
+| `entrega_agosto_estimular.csv` | los mismos 9.520 con encabezado `numero_de_cliente` |
 | `entrega_agosto_estimular_con_flag.csv` | los mismos 9.520 con `Predicted` (todos 1) |
 | `entrega_agosto.csv` | la cartera completa de agosto: 164.647 filas con 0/1 |
 | `competencia_02.ipynb` | el pipeline: carga, target, controles de fuga, fábrica de features |
@@ -35,6 +36,11 @@ carpeta. El listado corto de clientes a estimular son las filas con `Predicted =
 **Qué significa `Predicted`:** `1` = el modelo estima `PROB(BAJA+2) >= 0,025` y por lo
 tanto conviene gastar el estímulo de $27.500 en retenerlo. `0` = no estimular. En
 agosto: 9.520 unos y 155.127 ceros.
+
+**El archivo que se entregó** es `entrega_agosto_ids.csv`: solamente los 9.520 IDs de
+los clientes a estimular, sin encabezado y uno por línea, que es el formato que espera
+el bot de la materia. Los otros tres archivos son el mismo resultado en formatos
+distintos, por si hiciera falta.
 
 El CSV crudo (`competencia_01_crudo.csv`) no está en el repo por tamaño. Se baja de
 `https://storage.googleapis.com/open-courses/dmeyf2026-9c6f/competencia_01_crudo.csv`
