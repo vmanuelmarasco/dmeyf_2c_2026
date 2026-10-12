@@ -20,7 +20,14 @@ Lectura: con las 203 variables, entrenar con más meses no mejora; el salto apar
 con lag 1 y delta 1 de todas las variables, que describen a cada cliente "en movimiento" de la misma forma
 en todos los meses (las señales de verscla05 dependen de lags 2 y 3, vacíos en marzo y abril).
 
-## Cómo reproducir (desde la carpeta del proyecto, con `resultados/base/` de competencia_v5)
+## Cómo reproducir
+**`verscla09.py`** es el script único y autocontenido de la entrega final: lee el crudo, arma la clase y las
+variables, entrena con 202103–202106 y escribe el CSV. No depende de ningún otro archivo.
+```bash
+python verscla09.py                 # entrega: entregas_verscla09/verscla09_k13000.csv + 10 archivos por semilla
+python verscla09.py --validar       # además: ganancia en 202106 entrenando con 202103-202104
+```
+Los scripts de trabajo con los que se llegó (dependen de `resultados/base/` de competencia_v5):
 ```bash
 python pipeline_v8.py --solo-final --features todas --semillas-final 10 --k 13000 --nombre verscla09
 python pipeline_v8.py --solo-final --semillas-final 10 --k 13000                     # verscla08
