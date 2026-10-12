@@ -1,0 +1,10 @@
+              variante  meseta_media  desvio  vs_ref gana_semillas  semillerio_meseta  k_max_semillerio  adopta
+                  base         398.3     3.6     0.0           0/5              400.3             14500   False
+                   dom         405.6     5.8     7.3           4/5              407.2             14500    True
+                 ff035         409.5     3.9    11.2           5/5              411.6             15000    True
+           sin_trampas         401.7     2.2     3.4           3/5              403.8             14500   False
+             dom_ff035         413.8     3.6    15.5           5/5              415.7             12500    True
+               dom_din         403.4     4.3     5.1           4/5              405.4             15000    True
+         dom_din_ff035         409.8     4.7    11.5           4/5              413.2             13000    True
+p_feature_fraction=0.2         418.1     4.3    19.8           5/5              419.2             14000    True
+      p_num_leaves=150         416.2     3.5    17.9           5/5              417.3             12000    True
